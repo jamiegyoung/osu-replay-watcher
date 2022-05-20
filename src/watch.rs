@@ -14,24 +14,28 @@ pub async fn watch(osu_path: PathBuf, skin: String) -> notify::Result<()> {
         match rx.recv() {
             Ok(event) => {
                 if let DebouncedEvent::Create(file_path) = event {
-                    if file_path.is_file() {
-                        if let Some(ext) = file_path.extension() {
-                            if ext == "osr" {
-                                if let Some(file_path_string) = file_path.as_os_str().to_str() {
-                                    if let Some(name) = file_path.file_name() {
-                                        println!("Starting recording of {:?}", name);
-                                    }
-                                    danser::run_danser(
-                                        &["-r", file_path_string, "-record", "-skin", &skin],
-                                        true,
-                                    );
-                                }
-                            }
-                        };
-                    }
+                    check_file(file_path, &skin);
                 }
             }
             Err(e) => println!("watch error{:?}", e),
+        };
+    }
+}
+
+fn check_file(file_path: PathBuf, skin: &String) {
+    if file_path.is_file() {
+        if let Some(ext) = file_path.extension() {
+            if ext == "osr" {
+                if let Some(file_path_string) = file_path.as_os_str().to_str() {
+                    if let Some(name) = file_path.file_name() {
+                        println!("Starting recording of {:?}", name);
+                    }
+                    danser::run_danser(
+                        &["-r", file_path_string, "-record", "-skin", skin],
+                        true,
+                    );
+                }
+            }
         };
     }
 }
