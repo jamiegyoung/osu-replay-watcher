@@ -1,0 +1,3 @@
+[submodule "bland"]
+	path = bland
+	url = https://github.com/jamiegyoung/bland

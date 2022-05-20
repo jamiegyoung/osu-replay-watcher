@@ -1,0 +1,22 @@
+[package]
+name = "osu-replay-watcher"
+version = "0.2.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+notify = "4.0.17"
+tokio = { version = "1.8.2", features = ["full"] }
+reqwest = "0.11.4"
+error-chain = "0.12.4"
+zip = "0.5.13"
+term_size = "0.3.2"
+crc32fast = "1.2.1"
+bland = { path = "./bland" }
+which = "4.1.0"
+
+[profile.release]
+opt-level= 'z'
+lto = true
+codegen-units = 1
