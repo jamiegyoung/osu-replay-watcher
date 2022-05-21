@@ -786,8 +786,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "osu-replay-watcher"
-version = "0.2.0"
+name = "osu-replay-watchers"
+version = "0.2.1"
 dependencies = [
  "bland",
  "crc32fast",
