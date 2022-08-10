@@ -1,5 +1,5 @@
 use notify::{DebouncedEvent, RecommendedWatcher, RecursiveMode, Watcher};
-use std::{path::PathBuf, sync::mpsc::channel, time::Duration};
+use std::{path::PathBuf, sync::mpsc::channel, time::Duration, vec};
 
 use crate::danser;
 
@@ -31,7 +31,7 @@ fn check_file(file_path: PathBuf, skin: &String) {
                         println!("Starting recording of {:?}", name);
                     }
                     danser::run_danser(
-                        &["-r", file_path_string, "-record", "-skin", skin],
+                        vec!["-r", file_path_string, "-record", "-skin", skin],
                         true,
                     );
                 }

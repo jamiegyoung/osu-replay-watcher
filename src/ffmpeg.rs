@@ -30,7 +30,7 @@ pub async fn handle_ffmpeg() -> Result<bool> {
     match which::which("ffmpeg") {
         Ok(_) => {
             println!("FFmpeg found in PATH.");
-            return Ok(true);
+            Ok(true)
         }
         Err(_) => {
             let danser_path = PathBuf::from(DANSER_DIR);

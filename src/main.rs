@@ -142,7 +142,7 @@ async fn handle_danser(songs_folder: &str, skins_folder: &str) -> Result<()> {
     }
     println!("Initializing Danser");
     if !Path::new("./orw-danser/danser.db").exists() {
-        run_danser_async(&["-md5=false"], true).await;
+        run_danser_async(vec!["-md5", "0"], true).await;
     }
     Ok(())
 }

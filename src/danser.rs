@@ -1,4 +1,8 @@
+use bland::Store;
+use crc32fast::Hasher;
+use dunce::canonicalize;
 use std::{
+    // collections::HashMap,
     ffi::OsString,
     fs::{self, File},
     io::{copy, Read},
@@ -6,13 +10,10 @@ use std::{
     process::Command,
 };
 
-use bland::Store;
-use crc32fast::Hasher;
-
 const DANSER_DIR: &str = "./orw-danser";
-const DANSER_HASH: u32 = 2142748014;
+const DANSER_HASH: u32 = 592971390;
 const DANSER_DOWNLOAD_URI: &str =
-    "https://github.com/Wieku/danser-go/releases/download/0.6.9/danser-0.6.9-win.zip";
+    "https://github.com/Wieku/danser-go/releases/download/0.7.1/danser-0.7.1-win.zip";
 
 const IGNORED_FILES: [&str; 4] = ["settings", "danser.log", "danser.db", "ffmpeg.exe"];
 
@@ -64,7 +65,7 @@ fn remove_dir_contents(path: &Path) -> Result<()> {
 pub fn check_danser() -> Result<bool> {
     let danser_path = PathBuf::from(DANSER_DIR);
     if danser_path.is_dir() {
-        println!("Danser installation found, checking version...");
+        println!("Danser folder found, checking version...");
         // println!("{}", get_local_danser_hash()?);
         if get_local_danser_hash()? == DANSER_HASH {
             println!("Correct version found!");
@@ -128,21 +129,26 @@ fn extract_danser(danser_path: &Path) -> Result<()> {
     Ok(())
 }
 
-pub fn run_danser(args: &[&str], verbose: bool) {
+pub fn run_danser(args: Vec<&str>, verbose: bool) {
     println!("Running danser with args {:?}", args);
-    let mut danser_child = Command::new("./orw-danser/danser.exe");
+    let mut danser_child = Command::new(canonicalize("./orw-danser/danser.exe").unwrap());
     if verbose {
-        danser_child.args(args).spawn().unwrap();
+        danser_child
+            // .current_dir(canonicalize("./orw-danser").unwrap())
+            .args(args)
+            .spawn()
+            .unwrap();
         return;
     }
     danser_child.args(args).output().unwrap();
 }
 
-pub async fn run_danser_async(args: &[&str], verbose: bool) {
-    println!("Running danser with args {:?}", args);
-    let mut danser_child = AsyncCommand::new("./orw-danser/danser.exe");
+pub async fn run_danser_async(args: Vec<&str>, verbose: bool) {
+    println!("Running danser async with args {:?}", args);
+    let mut danser_child = AsyncCommand::new(canonicalize("./orw-danser/danser.exe").unwrap());
     if verbose {
         danser_child
+            // .current_dir(canonicalize("./orw-danser").unwrap())
             .args(args)
             .spawn()
             .expect("ls command failed to start")

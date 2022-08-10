@@ -1,5 +1,5 @@
 [package]
-name = "osu-replay-watchers"
+name = "osu-replay-watcher"
 version = "0.2.1"
 edition = "2018"
 
@@ -15,6 +15,7 @@ term_size = "0.3.2"
 crc32fast = "1.2.1"
 bland = { path = "./bland" }
 which = "4.1.0"
+dunce = "1.0.2"
 
 [profile.release]
 opt-level= 'z'
